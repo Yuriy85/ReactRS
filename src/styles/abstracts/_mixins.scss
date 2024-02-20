@@ -34,3 +34,8 @@
   }
 }
 
+@mixin border {
+  background: #ffffff45;
+  border: 2px outset $mid-grey;
+  border-radius: 0.3rem;
+}

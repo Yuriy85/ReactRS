@@ -1,0 +1,14 @@
+.poke-data__card {
+  @include border;
+  width: fit-content;
+  min-width: 15rem;
+  min-height: 20rem;
+  padding: 0.5rem;
+  h2 {
+    text-align: center;
+    margin: 0.5rem;
+  }
+  p {
+    margin: 0.5rem;
+  }
+}

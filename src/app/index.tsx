@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import Search from '../components/Search/index';
 import ErrorButton from '../components/ErrorButton';
+import PokeData from '../components/PokeData';
 
 class App extends Component {
   render() {
@@ -11,7 +12,7 @@ class App extends Component {
           <h1>ReactRS</h1>
           <ErrorButton />
           <Search />
-          <div className="data container"></div>
+          <PokeData />
         </main>
         <footer></footer>
       </>

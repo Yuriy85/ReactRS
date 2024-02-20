@@ -1,4 +1,9 @@
 .button {
-  background: #ffffff45;
-  border-radius: 0.3rem;
+  @include border;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    border-style: inset;
+  }
 }

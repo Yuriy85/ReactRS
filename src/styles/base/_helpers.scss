@@ -23,6 +23,10 @@
   margin-right: auto; /* 2 */
   padding: 10px 20px; /* 3 */
   width: 100%; /* 1 */
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /**
