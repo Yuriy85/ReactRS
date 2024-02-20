@@ -1,36 +1,16 @@
-import { Component, ReactNode } from 'react';
+import { Component } from 'react';
+import Search from '../components/Search/index';
+import ErrorButton from '../components/ErrorButton';
 
-interface Props {
-  children?: ReactNode;
-}
-
-interface State {
-  age: number;
-}
-
-class App extends Component<Props, State> {
-  public state: State = {
-    age: 1,
-  };
-  componentDidMount() {
-    console.log(1);
-  }
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
-    console.log(prevProps, prevState);
-  }
-  componentWillUnmount() {
-    console.log(2);
-  }
+class App extends Component {
   render() {
     return (
       <>
         <header></header>
         <main>
           <h1>ReactRS</h1>
-          <div className="search container">
-            <input className="search__input input"></input>
-            <button className="search__button button">Search</button>
-          </div>
+          <ErrorButton />
+          <Search />
           <div className="data container"></div>
         </main>
         <footer></footer>
