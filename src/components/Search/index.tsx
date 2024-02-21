@@ -23,12 +23,12 @@ class Search extends Component {
       <div className="search container">
         <input
           value={this.state.search}
-          className="search__input input"
+          className="search__input"
           onChange={(event) => {
             this.setState({ search: event.currentTarget.value });
           }}
         ></input>
-        <button className="search__button button">Search</button>
+        <button className="search__button">Search</button>
       </div>
     );
   }

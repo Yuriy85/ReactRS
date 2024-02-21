@@ -1,9 +1,0 @@
-.button {
-  @include border;
-  &:hover {
-    cursor: pointer;
-  }
-  &:active {
-    border-style: inset;
-  }
-}

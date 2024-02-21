@@ -9,7 +9,7 @@ interface Props {
 
 interface State {
   pokes: Pokes | '';
-  error: string;
+  error: Error | '';
 }
 
 class PokeData extends Component<Props, State> {
@@ -27,14 +27,16 @@ class PokeData extends Component<Props, State> {
       const pokeData = await getPokes(data.pokeApi);
       this.setState({ pokes: pokeData });
     } catch (error) {
-      this.setState({ error: error as string });
+      this.setState({ error: error as Error });
     }
   }
 
   render() {
     return (
       <div className="poke-data container">
-        {!this.state.pokes ? (
+        {this.state.error ? (
+          <h2>Something went wrong: {this.state.error.message}</h2>
+        ) : !this.state.pokes ? (
           <h2>Loading...</h2>
         ) : (
           this.state.pokes.results.map((result) => (

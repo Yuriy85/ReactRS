@@ -1,14 +1,22 @@
 import { Component } from 'react';
 
+interface State {
+  hasError: boolean;
+}
+
 class ErrorButton extends Component {
+  public state: State = { hasError: false };
+
   render() {
+    if (this.state.hasError) {
+      throw new Error("It's my handle fault!!!");
+    }
     return (
       <button
         onClick={() => {
-          throw new Error("It's my fault!!!");
+          this.setState({ hasError: true });
         }}
-        style={{ margin: '0 auto', display: 'block' }}
-        className="button"
+        className="error-button"
       >
         Error
       </button>

@@ -24,10 +24,10 @@
 
 // 5. Components
 @import
-  'components/button',
-  'components/input',
+  'components/errorButton',
   'components/pokeData',
   'components/pokeDataCard',
+  'components/errorBoundary',
   'components/search';
 
 // 6. Page-specific styles
