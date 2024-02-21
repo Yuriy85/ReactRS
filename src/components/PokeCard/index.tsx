@@ -12,7 +12,7 @@ interface State {
 }
 
 class PokeCard extends Component<Props, State> {
-  public state: State = {
+  public state: Readonly<State> = {
     error: null,
     pokeData: null,
   };
@@ -25,6 +25,7 @@ class PokeCard extends Component<Props, State> {
       this.setState({ error: error as Error });
     }
   }
+
   render() {
     return (
       <div className="poke-data__card">

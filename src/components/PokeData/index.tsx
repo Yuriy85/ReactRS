@@ -5,6 +5,7 @@ import { Pokes, getPokes } from '../../api/poke';
 
 interface Props {
   children?: ReactNode;
+  searchWord: string;
 }
 
 interface State {
@@ -13,13 +14,17 @@ interface State {
 }
 
 class PokeData extends Component<Props, State> {
-  public state: State = {
+  public state: Readonly<State> = {
     pokes: '',
     error: '',
   };
 
   setUpperChar(string: string) {
     return `${string[0].toUpperCase()}${string.slice(1)}`;
+  }
+
+  componentDidUpdate(): void {
+    console.log(this.props);
   }
 
   async componentDidMount(): Promise<void> {

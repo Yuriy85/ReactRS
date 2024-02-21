@@ -5,7 +5,7 @@ interface State {
 }
 
 class ErrorButton extends Component {
-  public state: State = { hasError: false };
+  public state: Readonly<State> = { hasError: false };
 
   render() {
     if (this.state.hasError) {
