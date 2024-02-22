@@ -9,31 +9,50 @@ interface Props {
 }
 
 interface State {
-  pokes: Pokes | '';
+  pokes: Pokes | null;
   error: Error | '';
+  noResult: boolean;
 }
 
 class PokeData extends Component<Props, State> {
   public state: Readonly<State> = {
-    pokes: '',
+    pokes: null,
     error: '',
+    noResult: false,
   };
 
   setUpperChar(string: string) {
     return `${string[0].toUpperCase()}${string.slice(1)}`;
   }
 
-  componentDidUpdate(): void {
-    console.log(this.props);
+  filterPokes(pokeData: Pokes, searchWord: string) {
+    const filteredPokeData: Pokes = Object.create(pokeData);
+    const result = pokeData.results.filter((poke) =>
+      poke.name.toLowerCase().includes(searchWord.toLowerCase().trimStart())
+    );
+    filteredPokeData.results = result;
+    result.length ? this.setState({ noResult: false }) : this.setState({ noResult: true });
+    return filteredPokeData;
   }
 
-  async componentDidMount(): Promise<void> {
+  async getPokes() {
     try {
-      const pokeData = await getPokes(data.pokeApi);
-      this.setState({ pokes: pokeData });
+      const pokeData: Pokes = await getPokes(data.pokeApi);
+      this.setState({ pokes: this.filterPokes(pokeData, this.props.searchWord) });
     } catch (error) {
       this.setState({ error: error as Error });
     }
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
+    if (!prevState.pokes || prevProps.searchWord === this.props.searchWord) {
+      return;
+    }
+    this.getPokes();
+  }
+
+  componentDidMount(): void {
+    this.getPokes();
   }
 
   render() {
@@ -43,6 +62,8 @@ class PokeData extends Component<Props, State> {
           <h2>Something went wrong: {this.state.error.message}</h2>
         ) : !this.state.pokes ? (
           <h2>Loading...</h2>
+        ) : this.state.noResult ? (
+          <h2>Sorry, not found.</h2>
         ) : (
           this.state.pokes.results.map((result) => (
             <PokeCard key={result.name} name={this.setUpperChar(result.name)} url={result.url} />
