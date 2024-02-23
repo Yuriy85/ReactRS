@@ -10,6 +10,7 @@ import getPagesParams from '../../utils/getPagesParams';
 interface Props {
   searchWord: string;
   activePage: number;
+  ctyPerPage: number;
   pagesParams: number[];
   setPagesParams: Dispatch<React.SetStateAction<number[]>>;
 }
@@ -17,15 +18,15 @@ interface Props {
 function PokeData(props: Props) {
   const [pokes, setPokes] = useState<Pokes | null>(null);
   const [getPokesFromApi, loading, error] = useFetch<string>(async (url) => {
-    const pokes: Pokes = await getPokes(url, props.pagesParams[props.activePage]);
+    const pokes: Pokes = await getPokes(url, props.pagesParams[props.activePage], props.ctyPerPage);
     const filteredPokes = filter(pokes, props.searchWord);
     setPokes(filteredPokes);
-    props.setPagesParams(getPagesParams(pokes.count));
+    props.setPagesParams(getPagesParams(pokes.count, props.ctyPerPage));
   });
 
   useEffect(() => {
     getPokesFromApi(data.pokeApi);
-  }, [props.searchWord, props.activePage]);
+  }, [props.searchWord, props.activePage, props.ctyPerPage]);
 
   return (
     <div className="poke-data container">

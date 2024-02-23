@@ -15,11 +15,8 @@ function PokeCard(props: Props) {
   });
 
   useEffect(() => {
-    if (pokeData) {
-      return;
-    }
     getPokeData(props.url);
-  });
+  }, []);
 
   return (
     <div className="poke-data__card">

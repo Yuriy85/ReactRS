@@ -8,6 +8,7 @@ import Pagination from '../components/Pagination';
 function App() {
   const [searchWord, setSearchWord] = useState(localStorage.getItem('search') || '');
   const [pagesParams, setPagesParams] = useState([0]);
+  const [ctyPerPage, setQtyPerPage] = useState(10);
   const [activePage, setActivePage] = useState(0);
 
   return (
@@ -16,11 +17,27 @@ function App() {
       <main>
         <h1>Poke berry</h1>
         <ErrorBoundary>
-          <ErrorButton />
+          <div className="container">
+            <ErrorButton />
+            <select
+              onChange={(event) => {
+                setQtyPerPage(+event.target.value);
+                setActivePage(0);
+              }}
+              className="select"
+            >
+              <option disabled>Choose cty per page</option>
+              <option value={10}>Ten per page</option>
+              <option value={5}>Five per page</option>
+              <option value={7}>Seven per page</option>
+              <option value={20}>Twenty per page</option>
+            </select>
+          </div>
           <Search setSearchWord={setSearchWord} />
           <PokeData
             searchWord={searchWord}
             activePage={activePage}
+            ctyPerPage={ctyPerPage}
             pagesParams={pagesParams}
             setPagesParams={setPagesParams}
           />

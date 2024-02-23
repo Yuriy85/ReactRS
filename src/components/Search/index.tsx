@@ -6,6 +6,11 @@ interface Props {
 
 function Search(props: Props) {
   const [searchValue, setSearchValue] = useState('');
+  const setWord = () => {
+    props.setSearchWord(searchValue);
+    localStorage.setItem('search', searchValue);
+  };
+
   useEffect(() => {
     const searchText = localStorage.getItem('search');
     if (searchText) {
@@ -18,17 +23,10 @@ function Search(props: Props) {
       <input
         value={searchValue}
         className="search__input"
-        onChange={(event) => {
-          setSearchValue(event.currentTarget.value);
-        }}
+        onKeyDown={(event) => event.key === 'Enter' && setWord()}
+        onChange={(event) => setSearchValue(event.currentTarget.value)}
       ></input>
-      <button
-        onClick={() => {
-          props.setSearchWord(searchValue);
-          localStorage.setItem('search', searchValue);
-        }}
-        className="search__button"
-      >
+      <button onClick={() => setWord()} className="search__button">
         Search
       </button>
     </div>
