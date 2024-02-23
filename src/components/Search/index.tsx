@@ -1,43 +1,37 @@
-import { Component } from 'react';
-
-interface State {
-  search: string;
-}
+import { useEffect, useState } from 'react';
 
 interface Props {
   setSearchWord: (word: string) => void;
 }
 
-class Search extends Component<Props, State> {
-  public state: Readonly<State> = { search: '' };
-  componentDidMount(): void {
+function Search(props: Props) {
+  const [searchValue, setSearchValue] = useState('');
+  useEffect(() => {
     const searchText = localStorage.getItem('search');
     if (searchText) {
-      this.setState({ search: searchText });
+      setSearchValue(searchText);
     }
-  }
+  }, []);
 
-  render() {
-    return (
-      <div className="search container">
-        <input
-          value={this.state.search}
-          className="search__input"
-          onChange={(event) => {
-            this.setState({ search: event.currentTarget.value });
-          }}
-        ></input>
-        <button
-          onClick={() => {
-            this.props.setSearchWord(this.state.search);
-          }}
-          className="search__button"
-        >
-          Search
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div className="search container">
+      <input
+        value={searchValue}
+        className="search__input"
+        onChange={(event) => {
+          setSearchValue(event.currentTarget.value);
+        }}
+      ></input>
+      <button
+        onClick={() => {
+          props.setSearchWord(searchValue);
+        }}
+        className="search__button"
+      >
+        Search
+      </button>
+    </div>
+  );
 }
 
 export default Search;

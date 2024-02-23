@@ -1,27 +1,23 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 
-interface State {
-  hasError: boolean;
-}
-
-class ErrorButton extends Component {
-  public state: Readonly<State> = { hasError: false };
-
-  render() {
-    if (this.state.hasError) {
+function ErrorButton() {
+  const [hasError, setHasError] = useState(false);
+  useEffect(() => {
+    if (hasError) {
       throw new Error("It's my handle fault!!!");
     }
-    return (
-      <button
-        onClick={() => {
-          this.setState({ hasError: true });
-        }}
-        className="error-button"
-      >
-        Error
-      </button>
-    );
-  }
+  }, [hasError]);
+
+  return (
+    <button
+      onClick={() => {
+        setHasError(true);
+      }}
+      className="error-button"
+    >
+      Error
+    </button>
+  );
 }
 
 export default ErrorButton;

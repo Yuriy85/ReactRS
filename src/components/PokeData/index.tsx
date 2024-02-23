@@ -1,77 +1,43 @@
-import { Component, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import PokeCard from '../PokeCard';
 import data from '../../data';
 import { Pokes, getPokes } from '../../api/poke';
+import useFetch from '../../hooks/useFetch';
+import filter from '../../utils/filter';
+import Loader from '../Loader';
 
 interface Props {
-  children?: ReactNode;
   searchWord: string;
 }
 
-interface State {
-  pokes: Pokes | null;
-  error: Error | '';
-  noResult: boolean;
-}
+function PokeData(props: Props) {
+  const [pokes, setPokes] = useState<Pokes | null>(null);
+  const [getPokesFromApi, loading, error] = useFetch<string>(async (url) => {
+    const pokes: Pokes = await getPokes(url);
+    setPokes(filter(pokes, props.searchWord));
+  });
 
-class PokeData extends Component<Props, State> {
-  public state: Readonly<State> = {
-    pokes: null,
-    error: '',
-    noResult: false,
-  };
+  useEffect(() => {
+    getPokesFromApi(data.pokeApi);
+  }, [props.searchWord]);
 
-  setUpperChar(string: string) {
-    return `${string[0].toUpperCase()}${string.slice(1)}`;
-  }
-
-  filterPokes(pokeData: Pokes, searchWord: string) {
-    const filteredPokeData: Pokes = Object.create(pokeData);
-    const result = pokeData.results.filter((poke) =>
-      poke.name.toLowerCase().includes(searchWord.toLowerCase().trimStart())
-    );
-    filteredPokeData.results = result;
-    result.length ? this.setState({ noResult: false }) : this.setState({ noResult: true });
-    return filteredPokeData;
-  }
-
-  async getPokes() {
-    try {
-      const pokeData: Pokes = await getPokes(data.pokeApi);
-      this.setState({ pokes: this.filterPokes(pokeData, this.props.searchWord) });
-    } catch (error) {
-      this.setState({ error: error as Error });
-    }
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>): void {
-    if (!prevState.pokes || prevProps.searchWord === this.props.searchWord) {
-      return;
-    }
-    this.getPokes();
-  }
-
-  componentDidMount(): void {
-    this.getPokes();
-  }
-
-  render() {
-    return (
-      <div className="poke-data container">
-        {this.state.error ? (
-          <h2>Something went wrong: {this.state.error.message}</h2>
-        ) : !this.state.pokes ? (
-          <h2>Loading...</h2>
-        ) : this.state.noResult ? (
-          <h2>Sorry, not found.</h2>
-        ) : (
-          this.state.pokes.results.map((result) => (
-            <PokeCard key={result.name} name={this.setUpperChar(result.name)} url={result.url} />
-          ))
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className="poke-data container">
+      {loading && <Loader />}
+      {!loading && !pokes?.results.length && <h2>Sorry, not found.</h2>}
+      {error ? (
+        <h2>Something went wrong: {error.message}</h2>
+      ) : (
+        pokes?.results.map((result) => (
+          <PokeCard
+            key={result.name}
+            name={`${result.name[0].toUpperCase()}${result.name.slice(1)}`}
+            url={result.url}
+          />
+        ))
+      )}
+    </div>
+  );
 }
 
 export default PokeData;

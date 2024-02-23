@@ -1,4 +1,5 @@
 .poke-data__card {
+  position: relative;
   @include border;
   width: fit-content;
   width: 15rem;
