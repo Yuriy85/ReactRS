@@ -1,12 +1,13 @@
 .loader {
-  position: absolute;
+  aspect-ratio: 1;
+  position: fixed;
   z-index: 1;
   display: flex;
   justify-content: center;
   color: silver;
-  height: 100%;
-  width: 100%;
   text-shadow: 0px 0px 15px black;
-  background: rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 0 7px 7px rgb(0 0 0 / 11%);
+  background: rgb(0 0 0 / 25%);
+  box-shadow: 0px 0 7px 7px rgb(0 0 0 / 25%);
+  border-radius: 5rem;
+  align-items: center;
 }

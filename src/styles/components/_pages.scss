@@ -1,0 +1,10 @@
+.pages {
+  gap: 0.5rem;
+}
+.pages__button {
+  @include button;
+  &--active {
+    border-style: inset;
+    background: rgb(255 255 255 / 50%);
+  }
+}

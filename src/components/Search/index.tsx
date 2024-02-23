@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 
 interface Props {
-  setSearchWord: (word: string) => void;
+  setSearchWord: Dispatch<React.SetStateAction<string>>;
 }
 
 function Search(props: Props) {
@@ -25,6 +25,7 @@ function Search(props: Props) {
       <button
         onClick={() => {
           props.setSearchWord(searchValue);
+          localStorage.setItem('search', searchValue);
         }}
         className="search__button"
       >

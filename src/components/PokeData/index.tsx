@@ -1,25 +1,31 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import PokeCard from '../PokeCard';
 import data from '../../data';
 import { Pokes, getPokes } from '../../api/poke';
 import useFetch from '../../hooks/useFetch';
 import filter from '../../utils/filter';
 import Loader from '../Loader';
+import getPagesParams from '../../utils/getPagesParams';
 
 interface Props {
   searchWord: string;
+  activePage: number;
+  pagesParams: number[];
+  setPagesParams: Dispatch<React.SetStateAction<number[]>>;
 }
 
 function PokeData(props: Props) {
   const [pokes, setPokes] = useState<Pokes | null>(null);
   const [getPokesFromApi, loading, error] = useFetch<string>(async (url) => {
-    const pokes: Pokes = await getPokes(url);
-    setPokes(filter(pokes, props.searchWord));
+    const pokes: Pokes = await getPokes(url, props.pagesParams[props.activePage]);
+    const filteredPokes = filter(pokes, props.searchWord);
+    setPokes(filteredPokes);
+    props.setPagesParams(getPagesParams(pokes.count));
   });
 
   useEffect(() => {
     getPokesFromApi(data.pokeApi);
-  }, [props.searchWord]);
+  }, [props.searchWord, props.activePage]);
 
   return (
     <div className="poke-data container">
